@@ -1,7 +1,13 @@
 package com.jpm.interview.vlam.util;
 
+import com.jpm.interview.vlam.PortfolioBuilder;
 import com.jpm.interview.vlam.data.Fund;
 import com.jpm.interview.vlam.exception.ParseException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -25,7 +31,31 @@ public class InputParser {
             parent.addFund(fund);
             return parent;
         } catch(NumberFormatException nfe) {
-            throw new ParseException("invalid format for Market Value", line);
+            throw new ParseException("invalid format for Market Value", nfe, line);
+        }
+    }
+
+    /**
+     *
+     * @param builder
+     * @param inputStream
+     * @throws IOException
+     */
+    public static void parse(PortfolioBuilder builder, InputStream inputStream) throws IOException
+    {
+        // start reading...
+        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")) ) {
+            String ln = "";
+            while (ln != null) {
+                ln = reader.readLine();
+                if (ln == null) break;
+
+                ln = ln.trim();
+                if (!ln.isEmpty()) {
+                    Fund fund = InputParser.parse(ln);
+                    builder.add(fund);
+                }
+            }   // end while...
         }
     }
 

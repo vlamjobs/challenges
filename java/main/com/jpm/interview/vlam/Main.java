@@ -1,16 +1,15 @@
 package com.jpm.interview.vlam;
 
-import com.jpm.interview.vlam.data.Fund;
+
 import com.jpm.interview.vlam.util.InputParser;
 import com.jpm.interview.vlam.util.Logger;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+
 
 /**
- *
+ * Main class to portfolio calculation
  */
 public class Main {
     public static void main(String argv[]) {
@@ -26,24 +25,11 @@ public class Main {
             }
 
             // builder and calculator...
-            PortfolioBuilder portfBuilder = new PortfolioBuilder();
+            PortfolioBuilder builder = new PortfolioBuilder();
+            PortfolioCalculator calculator = new PortfolioCalculator(builder);
 
-            // start reading...
-            try ( BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8")) ) {
-                String ln = "";
-                while (ln != null) {
-                    ln = reader.readLine();
-                    if (ln == null) break;
-
-                    ln = ln.trim();
-                    if (!ln.isEmpty()) {
-                        Fund fund = InputParser.parse(ln);
-                        portfBuilder.add(fund);
-                    }
-                }   // end while...
-            }
-
-            System.out.println(portfBuilder.get());
+            InputParser.parse(builder, input);
+            calculator.calculateWeighting();
 
         } catch (Throwable t) {
             Logger.error("error running main() - quit.", t);

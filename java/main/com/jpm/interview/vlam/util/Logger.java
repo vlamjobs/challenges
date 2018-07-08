@@ -16,7 +16,7 @@ public class Logger {
         ERROR,
     }
 
-    private static final Level sCurrentLevel = Level.DEBUG;
+    private static final Level sCurrentLevel = Level.INFO;
     private static final String sPattern = "yyyy-MM-dd HH:mm:ss.SSS zzz";
     private static final ThreadLocal<SimpleDateFormat> sFmt = ThreadLocal.withInitial(() -> new SimpleDateFormat(sPattern));
 

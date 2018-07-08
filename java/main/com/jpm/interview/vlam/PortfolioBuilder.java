@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
  *
  */
 public class PortfolioBuilder {
-
-    // we need a Map rather than a set because Fund.equals() only check name so Set.contains() won't work
+    // we need a Map rather than a set because the later won't allow to get element from it
+    // (which we needed to because two Funds are considered equal if their names equal)
     private Map<Fund,Fund> portfolio;
     private boolean isBuilt = false;
 
@@ -24,6 +24,7 @@ public class PortfolioBuilder {
     public PortfolioBuilder() {
         this.portfolio = new LinkedHashMap<>();
     }
+
 
     /**
      *
@@ -46,10 +47,10 @@ public class PortfolioBuilder {
     }
 
     /**
-     *
+     * TODO: can further optimize by doing all these (except depthFirstTraversal) in add() above...
      */
     private void build() {
-Logger.debug(this.portfolio.toString());
+        Logger.debug(this.portfolio.toString());
 
         // this contains all non top-level element...
         Set<Fund> toRemove = new HashSet<>();
@@ -69,18 +70,32 @@ Logger.debug(this.portfolio.toString());
         });
         toRemove.stream().forEach(this.portfolio::remove);
 
-        // 2. update fund value (just in case the input contains inconsistency)
+        // 2. update fund value (just in case the input contains inconsistency) and parent-child relationship
         this.portfolio.values().stream().forEach(f -> {
-            f.depthFirstTraversal(Fund::updateValue);
+            f.depthFirstTraversal(Fund::update);
         });
 
+        // 3. finally flag as done...
         this.isBuilt = true;
     }
 
 
+    /**
+     *
+     * @return the portfolio - i.e. list of top-level fund(s), normalized (i.e. isBuilt)
+     */
     public List<Fund> get() {
         if (!this.isBuilt) this.build();
         return this.portfolio.keySet().stream().collect(Collectors.toList());
     }
+
+    /**
+     *
+     */
+    public void reset() {
+        this.portfolio.clear();
+        this.isBuilt = false;
+    }
+
 
 }

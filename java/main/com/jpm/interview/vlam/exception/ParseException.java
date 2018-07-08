@@ -21,10 +21,14 @@ public class ParseException extends IOException {
 
     /**
      *
-     * @return the original input
+     * @param message
+     * @param cause
+     * @param input
      */
-    public String getInput() {
-        return this.input;
+    public ParseException(String message, Exception cause, String input) {
+        super(message, cause);
+
+        this.input = input;
     }
 
 
