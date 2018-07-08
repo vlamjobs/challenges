@@ -26,7 +26,7 @@ public class Main {
 
             // builder and calculator...
             PortfolioBuilder builder = new PortfolioBuilder();
-            PortfolioCalculator calculator = new PortfolioCalculator(builder);
+            PortfolioCalculator calculator = new PortfolioCalculator(builder, System.out);
 
             InputParser.parse(builder, input);
             calculator.calculateWeighting();
