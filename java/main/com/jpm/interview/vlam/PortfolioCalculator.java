@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 
 
 /**
- * TODO: may not be the best approach here, the traversal use OutputStream but perhaps it better to have weighting
- * TODO: stored in the Fund object or return some other data structure?
+ * TODO: may not be the best approach here, the traversal use OutputStream to print the result but perhaps it better
+ * TODO: to have weighting or other attributes stored in the Fund object or return some other data structure?
  *
  */
 public class PortfolioCalculator {
@@ -34,11 +34,13 @@ public class PortfolioCalculator {
 
 
     /**
+     * visit each of the base fund and perform #Consumer.accept()
      *
      * @param consumer
      */
     private void visitBaseFunds(Consumer<Fund> consumer) {
-        List<Fund> funds = this.builder.get();      // this will make sure we "normalized" all nodes and only get the top-level elements...
+        // this will make sure we "normalized" all nodes and only get the top-level elements...
+        List<Fund> funds = this.builder.get();
         Logger.debug(funds.toString());
 
         funds.forEach(f -> f.depthFirstTraversal(e -> {
@@ -63,9 +65,11 @@ public class PortfolioCalculator {
     }
 
     /**
-     * TODO: without being able to clarify the requirement, let's assume return is calculated after Fund structure is
-     * TODO: parsed and normalized, then leaf node ending market value (e.g. CLOSE price) is given
-     * TODO: also - no input parsing of endingMarketValues has been implemented (only test in PortfolioCalculatorTest)
+     * TODO: without being able to clarify the requirement, assume weighted return is calculated after Fund structure
+     * TODO: is parsed and normalized, then some ending market values (e.g. CLOSE price) are given;
+     * TODO: visit the tree and for each base fund (leaf node), check the PnL against the ending market values...
+     * TODO:
+     * TODO: also - no input parsing of endingMarketValues has been implemented (only test in #PortfolioCalculatorTest)
      */
     public void calculateWeightedReturn(Map<String,Double> endingMarketValues) {
         this.visitBaseFunds(e -> {

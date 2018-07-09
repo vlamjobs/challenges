@@ -43,7 +43,7 @@ public class InputParser {
      */
     public static void parse(PortfolioBuilder builder, InputStream inputStream) throws IOException
     {
-        // start reading...
+        // try-with-resources (will close the reader)...
         try ( BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")) ) {
             String ln = "";
             while (ln != null) {

@@ -32,4 +32,13 @@ public class ParseException extends IOException {
     }
 
 
+    /**
+     *
+     * @return
+     */
+    public String getInput() {
+        return this.input;
+    }
+
+
 }

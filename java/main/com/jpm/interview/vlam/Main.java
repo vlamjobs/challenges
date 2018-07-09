@@ -18,7 +18,7 @@ public class Main {
             // if there is no argument, read from System.in, otherwise from the file specified by the argument...
             InputStream input = System.in;
             if (argv.length > 1) {
-                System.err.println("usage: main <optional input file>");
+                System.err.println("usage: main <optional input file> (from stdin if omitted)");
                 System.exit(1);
             } else if (argv.length == 1) {
                 input = new FileInputStream(argv[0]);
